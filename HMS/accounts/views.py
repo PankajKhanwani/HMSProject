@@ -301,7 +301,7 @@ def employee_details(request, pk):
         employee = Employee.objects.get(user=user)
         user.first_name = request.POST.get("first_name")
         user.last_name = request.POST.get("last_name")
-        user.email = request.POST.get("email")
+        # user.email = request.POST.get("email")
         employee.phoneNumber = request.POST.get("phoneNumber")
         user.save()
         employee.save()

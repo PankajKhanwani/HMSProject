@@ -2,6 +2,8 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import User
 # Create your models here.
+import room
+
 
 
 class Guest(models.Model):
@@ -12,11 +14,11 @@ class Guest(models.Model):
         return str(self.user)
 
     def numOfBooking(self):
-        return Booking.objects.filter(guest=self).count()
+        return room.models.Booking.objects.filter(guest=self).count()
 
     def numOfDays(self):
         totalDay = 0
-        bookings = Booking.objects.filter(guest=self)
+        bookings = room.models.Booking.objects.filter(guest=self)
         for b in bookings:
             day = b.endDate - b.startDate
             totalDay += int(day.days)
@@ -25,12 +27,12 @@ class Guest(models.Model):
 
     def numOfLastBookingDays(self):
         try:
-            return int((Booking.objects.filter(guest=self).last().endDate - Booking.objects.filter(guest=self).last().startDate).days)
+            return int((room.models.Booking.objects.filter(guest=self).last().endDate - Booking.objects.filter(guest=self).last().startDate).days)
         except:
             return 0
 
     def currentRoom(self):
-        booking = Booking.objects.filter(guest=self).last()
+        booking = room.models.Booking.objects.filter(guest=self).last()
         return booking.roomNumber
 
 
