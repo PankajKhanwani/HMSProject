@@ -27,7 +27,7 @@ class Guest(models.Model):
 
     def numOfLastBookingDays(self):
         try:
-            return int((room.models.Booking.objects.filter(guest=self).last().endDate - Booking.objects.filter(guest=self).last().startDate).days)
+            return int((room.models.Booking.objects.filter(guest=self).last().endDate - room.models.Booking.objects.filter(guest=self).last().startDate).days)
         except:
             return 0
 

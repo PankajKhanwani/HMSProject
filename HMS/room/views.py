@@ -252,12 +252,16 @@ def current_room_services(request):
     room_services = RoomServices.objects.all()
 
     group = Group.objects.get(name='staff')
+    print(group)
     users = User.objects.filter(groups=group)
     allEmployees = Employee.objects.filter(user__in=users)
+    print(users,'user')
+    print(allEmployees)
     availableEmployee = list()
     maxTaskNum = 10
 
     for e in allEmployees:
+        print(e)
         counter = 0
         empTasks = Task.objects.filter(employee=e)
         for t in empTasks:
@@ -273,7 +277,7 @@ def current_room_services(request):
         "curRoom": curRoom,
         "curRoomServices": curRoomServices
     }
-
+    print(request.POST)
     if request.method == "POST":
         if "foodReq" in request.POST:
             newServiceReq = RoomServices(
@@ -282,7 +286,7 @@ def current_room_services(request):
 
             chosenEmp = random.choice(availableEmployee)
             lastTask = Task.objects.filter(employee=chosenEmp).last()
-            if(lastTask != None):
+            if lastTask != None:
                 newTask = Task(employee=chosenEmp, startTime=lastTask.endTime,
                                endTime=lastTask.endTime+datetime.timedelta(minutes=30), description="Food Request")
             else:
@@ -328,6 +332,7 @@ def current_room_services(request):
 @login_required(login_url='login')
 def bookings(request):
     import datetime
+    print(request.user.groups.all()[0])
     role = str(request.user.groups.all()[0])
     path = role + "/"
 
@@ -396,26 +401,28 @@ def bookings(request):
 def booking_make(request):
     role = str(request.user.groups.all()[0])
     path = role + "/"
-
+    print(path)
     room = Room.objects.get(number=request.POST.get("roomid"))
     guests = Guest.objects.all()  # we pass this to context
 
     names = []
     if request.method == 'POST':
-        print('ji')
         if request.POST.get("fd") == "" or request.POST.get("ld") == "":
             print(request.POST.get("fd"))
             return redirect("rooms")
-
+        print(request.POST.get("fd"))
         start_date = datetime.strptime(
             str(request.POST.get("fd")), "%Y-%m-%d")
+        print(start_date)
         end_date = datetime.strptime(
             str(request.POST.get("ld")), "%Y-%m-%d")
         numberOfDays = abs((end_date-start_date).days)
+        print(numberOfDays)
         # get room peice:
         price = room.price
         total = price * numberOfDays
 
+        print(request.POST)
         if 'add' in request.POST:  # add dependee
             name = request.POST.get("depName")
             names.append(name)
