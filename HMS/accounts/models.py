@@ -44,6 +44,10 @@ class Employee(models.Model):
     def __str__(self):
         return str(self.user)
 
+class Attendence(models.Model):
+    Employee = models.ForeignKey(Employee, on_delete=models.DO_NOTHING)
+    inTime = models.DateField(auto_now_add=True)
+    outTime = models.DateField(null=True, blank=True)
 
 class Task(models.Model):
     employee = models.ForeignKey(

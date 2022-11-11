@@ -320,6 +320,14 @@ def employee_details(request, pk):
     }
     return render(request, path + "employee-profile.html", context)
 
+def takeAttendence(request):
+    if request.method == "POST":
+        emp_id = request.POST.get('emp_id')
+        attendenceObject = Attendence(Employee_id=emp_id)
+        attendenceObject.save()
+        return HttpResponse("Attendence Marked")
+    else:
+        return HttpResponse("err")
 
 @ login_required(login_url='login')
 def employee_details_edit(request, pk):
