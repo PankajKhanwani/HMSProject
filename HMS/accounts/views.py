@@ -320,6 +320,7 @@ def employee_details(request, pk):
     }
     return render(request, path + "employee-profile.html", context)
 
+@ login_required(login_url='login')
 def takeAttendence(request):
     if request.method == "POST":
         emp_id = request.POST.get('emp_id')
