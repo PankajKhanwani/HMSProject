@@ -349,6 +349,8 @@ def bookings(request):
         total = price * numberOfDays
         totals[booking] = total
 
+    print(request.POST)
+    print(totals)
     if request.method == "POST":
         if "filter" in request.POST:
             if (request.POST.get("number") != ""):
